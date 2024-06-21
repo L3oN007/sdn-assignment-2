@@ -1,6 +1,7 @@
 GET http://localhost:5000/watches
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2NjcxMmQ1NTk0NzNjODViYzU2NGY4ODkiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTg5NjU5OTYsImV4cCI6MTcxOTA1MjM5Nn0.Cl9EG_0c4pBNYTUzqHUhmA5qdSS-NxSU_XJWMuDN0XA 
-### AUTH
+
+### Login
 
 POST http://localhost:5000/auth/login
 Content-Type: application/json
@@ -8,4 +9,16 @@ Content-Type: application/json
 {
   "memberName": "admin",
   "password": "123456"
+}
+
+
+### Register
+POST http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+  "memberName": "admin",
+  "password": "123456",
+  "name": "Boss",
+  "YOB":1995
 }

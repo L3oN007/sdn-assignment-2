@@ -1,17 +1,43 @@
 const { body } = require('express-validator');
 
-const authValidator = () => [
+const loginValidator = () => [
     body('memberName')
         .notEmpty()
         .withMessage('Username is required')
-        .isLength({ min: 5 })
-        .withMessage('Username must be at least 5 characters long')
-        .isLength({ max: 20 })
-        .withMessage('Username must be at most 20 characters long'),
+        .isLength({ min: 2 })
+        .withMessage('Username must be at least 2 characters long'),
     body('password')
         .notEmpty()
         .withMessage('Password is required')
         .isLength({ min: 5 })
+        .withMessage('Password must be at least 5 characters long')
 ]
 
-module.exports = authValidator
+const registerValidator = () => [
+    body('memberName')
+        .notEmpty()
+        .withMessage('Username is required')
+        .isLength({ min: 2 })
+        .withMessage('Username must be at least 2 characters long'),
+    body('password')
+        .notEmpty()
+        .withMessage('Password is required')
+        .isLength({ min: 5 })
+        .withMessage('Password must be at least 5 characters long'),
+    body('name')
+        .notEmpty()
+        .withMessage('Name is required')
+        .isLength({ min: 2 })
+        .withMessage('Name must be at least 2 characters long'),
+    body('YOB')
+        .notEmpty()
+        .withMessage('Year of birth is required')
+        .isNumeric()
+]
+
+
+
+module.exports = {
+    loginValidator,
+    registerValidator
+}

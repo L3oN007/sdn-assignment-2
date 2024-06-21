@@ -13,9 +13,11 @@ const commentSchema = new mongoose.Schema(
 // Define schema for members (separate collection)
 const memberSchema = new mongoose.Schema(
     {
-        memberName: { type: String, required: true }, // Corrected typo (memberName)
+        memberName: { type: String, required: true },
         password: { type: String, required: true },
-        isAdmin: { type: Boolean, default: false }
+        isAdmin: { type: Boolean, default: false },
+        name: { type: String, required: true },
+        YOB: { type: Number, required: true },
     },
     { timestamps: true }
 )

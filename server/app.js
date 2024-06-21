@@ -4,7 +4,7 @@ const path = require('path');
 const passport = require('passport');
 const rootRoute = require('./routes/index');
 const connectDB = require('./config/database');
-
+const cookieParser = require('cookie-parser');
 /**
  * -------------- GENERAL SETUP ----------------
  */
@@ -29,7 +29,7 @@ app.use(passport.initialize());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
