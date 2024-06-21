@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const watchRouter = require('./watchRoute')
 
+// ! AUTH ROUTE
+router.use('/auth', require('./authRoute'))
 
-router.use('/watches', watchRouter)
+// ! WATCH ROUTE
+router.use('/watches', require('./watchRoute'))
 
 module.exports = router;

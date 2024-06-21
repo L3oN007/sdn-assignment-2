@@ -1,40 +1,30 @@
-const fs = require('fs');
-const path = require('path');
 const { Member } = require('../models/model');
+const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
+const PUB_KEY = "super-secret-key"; // Ideally, use environment variables for sensitive data
 
-const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
-const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
-
-// TODO
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: PUB_KEY,
-    algorithms: ['RS256']
+    algorithms: ['HS256'] // Use HS256 for a symmetric key
 };
 
-// TODO
 module.exports = (passport) => {
-    // The JWT payload is passed into the verify callback
-    passport.use(new JwtStrategy(options, function (jwt_payload, done) {
+    passport.use(
+        new JwtStrategy(options, async (jwt_payload, done) => {
+            try {
+                console.log("🟢🤖 JWT Payload:", jwt_payload);
 
-        console.log(jwt_payload);
-
-        // We will assign the `sub` property on the JWT to the database ID of user
-        Member.findOne({ _id: jwt_payload.sub }, function (err, user) {
-
-            if (err) {
+                // We will assign the `sub` property on the JWT to the database ID of the user
+                const user = await Member.findOne({ _id: jwt_payload._id });
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            } catch (err) {
                 return done(err, false);
             }
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-
-        });
-
-    }));
-}
+        })
+    );
+};

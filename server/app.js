@@ -21,10 +21,11 @@ connectDB()
 
 
 // Pass the global passport object into the configuration function
-// require('./config/passport')(passport);
 
 // This will initialize the passport object on every request
+require('./config/passport')(passport);
 app.use(passport.initialize());
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
