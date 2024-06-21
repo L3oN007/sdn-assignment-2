@@ -16,6 +16,20 @@ const watchController = {
         }
 
     },
+    getWatchById: async (req, res) => {
+        try {
+            const watch = await Watch.findById(req.params.id)
+            return res.status(200).json({
+                message: "Success",
+                response: watch
+            })
+        } catch (error) {
+            console.log("Get watch by id error: ", error)
+            res.status(400).json({
+                message: "Bad request"
+            })
+        }
+    }
 }
 
 module.exports = watchController

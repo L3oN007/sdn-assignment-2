@@ -1,5 +1,5 @@
-GET http://localhost:5000/watches
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2NjcxMmQ1NTk0NzNjODViYzU2NGY4ODkiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTg5NjU5OTYsImV4cCI6MTcxOTA1MjM5Nn0.Cl9EG_0c4pBNYTUzqHUhmA5qdSS-NxSU_XJWMuDN0XA 
+GET http://localhost:5000/watches/23esdfsd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc1OTAyYjg5Y2IzMWJlZDgzMDk5YzYiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzE4OTgxOTg1LCJleHAiOjE3MTkwNjgzODV9.rKFylxCZoou9wp9CR8A256a2tJDsizvUFkBZiyx-vW0
 
 ### Login
 
@@ -21,4 +21,12 @@ Content-Type: application/json
   "password": "123456",
   "name": "Boss",
   "YOB":1995
+}
+
+### Brand
+DELETE  http://localhost:5000/brands/66759950c95e608ae32c2e15
+Content-Type: application/json
+
+{
+  "brandName": "ABCDE123"
 }
