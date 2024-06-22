@@ -99,10 +99,10 @@ const HomePage = () => {
                       </div>
                     </div>
                     <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                      <Star className="size-4 text-yellow-400" />
+                      <Star className="size-4 " />
 
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-500">Ave Star</p>
+                        <p className="text-gray-500">Avg Star</p>
 
                         <p className="font-medium">123123</p>
                       </div>
