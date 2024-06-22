@@ -1,5 +1,5 @@
 POST  http://localhost:5000/watches
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc1OTAyYjg5Y2IzMWJlZDgzMDk5YzYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMjQ4MDMsImV4cCI6MTcxOTExMTIwM30.7vgDllC--cKcj4HJ8LNhvYaAfZWCBVC3zeHofSWQong
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc2NWU2NmMxYTM0MjQ0OTQ1YjcwM2QiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMzQ0NDEsImV4cCI6MTcxOTEyMDg0MX0.DN8L31GRhxRJDkSjBeHdTEaUIvd6QeoxA37lxhSN-ws
 Content-Type: application/json
 
 {
@@ -19,6 +19,11 @@ Content-Type: application/json
   "memberName": "admin",
   "password": "123456"
 }
+
+### LOGOUT
+POST http://localhost:5000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc2NWU2NmMxYTM0MjQ0OTQ1YjcwM2QiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMzQ0NDEsImV4cCI6MTcxOTEyMDg0MX0.DN8L31GRhxRJDkSjBeHdTEaUIvd6QeoxA37lxhSN-ws
+
 
 
 ### Register
@@ -42,6 +47,11 @@ Content-Type: application/json
 
 ### 
 GET  http://localhost:5000/watches
+
+###
+GET  http://localhost:5000/accounts/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc2NWU2NmMxYTM0MjQ0OTQ1YjcwM2QiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMzM4NTAsImV4cCI6MTcxOTEyMDI1MH0.DG0OkYsO-fOBO7F99nck1QuQ26SZjXUUdWZQvAYvE0I
+
 
 ###  
 POST http://localhost:5000/auth/change-password

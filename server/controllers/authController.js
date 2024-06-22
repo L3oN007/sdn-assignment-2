@@ -1,5 +1,5 @@
 const { Member } = require('../models/model');
-const { loginValidator, registerValidator, changePasswordValidator } = require('../validators/auth');
+const { loginValidator, registerValidator, changePasswordValidator, updateProfileValidator } = require('../validators/auth');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -157,6 +157,66 @@ const authController = {
                     message: "Internal server error"
                 });
 
+            }
+        }
+    ],
+    logout: async (req, res, next) => {
+        try {
+            req.logout(function (err) {
+                if (err) { return next(err); }
+            })
+            res.cookie('token', '', {
+                httpOnly: true, // Helps prevent XSS attacks
+                secure: process.env.NODE_ENV === 'production', // Ensures the cookie is sent over HTTPS in production
+                sameSite: 'strict', // Prevents the cookie from being sent with cross-site requests
+                maxAge: 0 // 0 seconds
+            });
+
+            return res.status(200).json({
+                success: true,
+                message: "Logout successful"
+            });
+        } catch (error) {
+            console.log("Logout error: ", error)
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    },
+    updateProfile: [
+        updateProfileValidator(),
+        async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    success: false,
+                    message: errors.array().map(err => err.msg).join(', ')
+                });
+            }
+            const { memberName, name, YOB } = req.body;
+            try {
+                const existMember = await Member.findOne({ memberName });
+                if (existMember) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Username already exists"
+                    });
+                }
+                existMember.memberName = memberName;
+                existMember.name = name;
+                existMember.YOB = YOB;
+                await existMember.save();
+                return res.status(200).json({
+                    success: true,
+                    message: "Profile updated successfully"
+                })
+            } catch (error) {
+                console.log("Update profile error: ", error)
+                return res.status(500).json({
+                    success: false,
+                    message: "Internal server error"
+                });
             }
         }
     ]

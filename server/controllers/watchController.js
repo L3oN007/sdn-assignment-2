@@ -1,5 +1,6 @@
 const { calculateAverageRating } = require('../lib/utils');
-const { Watch } = require('../models/model')
+const { Watch } = require('../models/model');
+const commentValidator = require('../validators/comment');
 const watchValidator = require('../validators/watch')
 const { validationResult } = require('express-validator');
 
@@ -128,7 +129,172 @@ const watchController = {
                 message: "Internal server error"
             })
         }
-    }
+    },
+    deleteCommentById: async (req, res) => {
+        const { watchId, commentId } = req.params
+        try {
+            const watch = await Watch.findById(watchId)
+            if (!watch) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Watch not found"
+                });
+            }
+
+            // Find the comment to be deleted
+            const comment = watch.comments.id(commentId);
+            if (!comment) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Comment not found"
+                });
+            }
+
+            if (comment.author.toString() !== req.user._id.toString()) {
+                return res.status(403).json({
+                    success: false,
+                    message: "You are not authorized to delete this comment"
+                });
+            }
+
+            // Delete the comment
+            comment.remove();
+            await watch.save();
+            return res.status(200).json({
+                success: true,
+                message: "Comment deleted successfully",
+            })
+        } catch (error) {
+            console.log("Delete comment error: ", error)
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            })
+        }
+    },
+    createComment: [
+        commentValidator(),
+        async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    success: false,
+                    message: errors.array().map(err => err.msg).join(', ')
+                });
+            }
+            const { watchId } = req.params
+            const { content, rating } = req.body
+            try {
+                const watch = await Watch.findById(watchId)
+                if (!watch) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Watch not found"
+                    });
+                }
+
+                const userHasCommented = watch.comments.some(comment => comment.author.equals(req.user._id));
+                if (userHasCommented) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "You can only comment once"
+                    });
+                }
+                const newComment = new Comment({
+                    content,
+                    rating,
+                    author: req.user._id
+                });
+                watch.comments.push(newComment);
+                await watch.save();
+                return res.status(200).json({
+                    success: true,
+                    message: "Comment created successfully",
+                    response: newComment
+                })
+            } catch (error) {
+                console.log("Create comment error: ", error)
+                return res.status(500).json({
+                    success: false,
+                    message: "Internal server error"
+                });
+            }
+        }
+    ],
+    getAllCommentsByWatchId: async (req, res) => {
+        const { watchId } = req.params
+        try {
+            const watch = await Watch.findById(watchId)
+            if (!watch) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Watch not found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: "Success",
+                response: watch.comments
+            })
+        } catch (error) {
+            console.log("Get all comments error: ", error)
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    },
+    updateComment: [
+        commentValidator(),
+        async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    success: false,
+                    message: errors.array().map(err => err.msg).join(', ')
+                });
+            }
+            const { watchId, commentId } = req.params
+            const { content, rating } = req.body
+            try {
+                const watch = await Watch.findById(watchId)
+                if (!watch) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Watch not found"
+                    });
+                }
+
+                // Find the comment to be updated
+                const comment = watch.comments.id(commentId);
+                if (!comment) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "Comment not found"
+                    });
+                }
+                if (comment.author.toString() !== req.user._id.toString()) {
+                    return res.status(403).json({
+                        success: false,
+                        message: "You are not authorized to update this comment"
+                    });
+                }
+                comment.content = content
+                comment.rating = rating
+                await watch.save();
+                return res.status(200).json({
+                    success: true,
+                    message: "Comment updated successfully",
+                })
+            } catch (error) {
+                console.log("Update comment error: ", error)
+                return res.status(500).json({
+                    success: false,
+                    message: "Internal server error"
+                });
+            }
+        }
+    ]
 }
 
 module.exports = watchController

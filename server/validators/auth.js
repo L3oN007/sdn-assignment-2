@@ -49,10 +49,30 @@ const changePasswordValidator = () => [
 
 ]
 
+const updateProfileValidator = () => [
+    body('memberName')
+        .notEmpty()
+        .withMessage('Username is required')
+        .isLength({ min: 2 })
+        .withMessage('Name must be at least 2 characters long'),
+    body('YOB')
+        .notEmpty()
+        .withMessage('Year of birth is required')
+        .isNumeric()
+        .withMessage('Year of birth must be a number'),
+    body('name')
+        .notEmpty()
+        .withMessage('Name is required')
+        .isLength({ min: 2 })
+        .withMessage('Name must be at least 2 characters long'),
+
+]
+
 
 
 module.exports = {
     loginValidator,
     registerValidator,
-    changePasswordValidator
+    changePasswordValidator,
+    updateProfileValidator
 }
