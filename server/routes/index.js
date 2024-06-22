@@ -10,4 +10,7 @@ router.use('/watches', require('./watchRoute'))
 // ! BRAND ROUTE
 router.use('/brands', require('./brandRoute'))
 
+// ! ACCOUNT ROUTE
+router.use('/accounts', require('./memberRoute'))
+
 module.exports = router;
