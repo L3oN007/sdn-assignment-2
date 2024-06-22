@@ -39,3 +39,10 @@ Content-Type: application/json
 {
   "brandName": "ABCDE123"
 }
+
+### 
+GET  http://localhost:5000/watches
+
+###  
+POST http://localhost:5000/auth/change-password
+

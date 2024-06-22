@@ -35,9 +35,24 @@ const registerValidator = () => [
         .isNumeric()
 ]
 
+const changePasswordValidator = () => [
+    body('password')
+        .notEmpty()
+        .withMessage('Password is required')
+        .isLength({ min: 5 })
+        .withMessage('Password must be at least 5 characters long'),
+    body('newPassword')
+        .notEmpty()
+        .withMessage('New password is required')
+        .isLength({ min: 5 })
+        .withMessage('New password must be at least 5 characters long')
+
+]
+
 
 
 module.exports = {
     loginValidator,
-    registerValidator
+    registerValidator,
+    changePasswordValidator
 }
