@@ -1,6 +1,15 @@
-GET http://localhost:5000/watches/23esdfsd
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc1OTAyYjg5Y2IzMWJlZDgzMDk5YzYiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzE4OTgxOTg1LCJleHAiOjE3MTkwNjgzODV9.rKFylxCZoou9wp9CR8A256a2tJDsizvUFkBZiyx-vW0
+POST  http://localhost:5000/watches
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc1OTAyYjg5Y2IzMWJlZDgzMDk5YzYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMjQ4MDMsImV4cCI6MTcxOTExMTIwM30.7vgDllC--cKcj4HJ8LNhvYaAfZWCBVC3zeHofSWQong
+Content-Type: application/json
 
+{
+  "watchName": "admin123",
+  "image": "https://media.rolex.com/image/upload/q_auto/f_auto/c_limit,w_1920/v1/rolexcom/collection/watches-grid/popin-cards/m124300-0001/m124300-0001_v01",
+  "price": 123123,
+  "automatic": true,
+  "watchDescription": "123456",
+  "brand": "666d829c3d2f2cfe397f659a"
+}
 ### Login
 
 POST http://localhost:5000/auth/login
@@ -24,7 +33,7 @@ Content-Type: application/json
 }
 
 ### Brand
-DELETE  http://localhost:5000/brands/66759950c95e608ae32c2e15
+DELETE  http://localhost:5000/brands/666d829c3d2f2cfe397f659a
 Content-Type: application/json
 
 {

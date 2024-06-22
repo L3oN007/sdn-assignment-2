@@ -1,4 +1,4 @@
-const { Brand } = require('../models/model')
+const { Brand, Watch } = require('../models/model')
 const brandValidator = require('../validators/brand')
 const { validationResult } = require('express-validator');
 
@@ -108,6 +108,14 @@ const brandController = {
     deleteBrandById: async (req, res) => {
         const { id } = req.params
         try {
+            const watches = await Watch.find({ brand: id })
+            if (watches.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Cannot delete brand because it is referenced by watches"
+                });
+            }
+
             await Brand.findByIdAndDelete(id)
             return res.status(200).json({
                 success: true,

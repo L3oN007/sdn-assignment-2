@@ -1,8 +1,18 @@
 const watchController = require('../controllers/watchController')
-const isAuth = require('../lib/authMidddleware').isAuth
+const isAdmin = require('../lib/authMiddleware').isAdmin
 const router = require('express').Router()
 
-router.get('/', isAuth, watchController.getAllWatches)
-router.get('/:id', isAuth, watchController.getWatchById)
+// ! GET
+router.get('/', watchController.getAllWatches)
+router.get('/:id', watchController.getWatchById)
+
+// ! CREATE
+router.post('/', isAdmin, watchController.createNewWatch)
+
+// ! UPDATE
+router.put('/:id', isAdmin, watchController.updateWatchById)
+
+// ! DELETE
+router.delete('/:id', isAdmin, watchController.deleteWatchById)
 
 module.exports = router
