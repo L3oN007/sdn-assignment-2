@@ -1,12 +1,13 @@
-import ErrorPage from "@/pages/error"
-import CommentSection from "@/pages/watch-detail/comment-section"
-import WatchDetailSection from "@/pages/watch-detail/watch-detail-section"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 
 import { WatchDetailResponseType } from "@/schemas/watch.schema"
 
 import api from "@/lib/api"
+
+import ErrorPage from "@/pages/error"
+import CommentSection from "@/pages/watch-detail/comment-section"
+import WatchDetailSection from "@/pages/watch-detail/watch-detail-section"
 
 import { Loader } from "@/components/loader"
 

@@ -61,7 +61,7 @@ export default function Header() {
                 <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
               </div>
               <div className="flex flex-col">
-                <p className="text-base font-medium text-black">
+                <p className="text-base font-medium text-black first-letter:uppercase">
                   {member?.memberName}
                 </p>
                 <button
