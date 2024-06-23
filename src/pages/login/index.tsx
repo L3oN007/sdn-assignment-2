@@ -1,3 +1,4 @@
+import { useAuthContext } from "@/contexts/auth-provider"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
@@ -25,6 +26,7 @@ import { Label } from "@/components/ui/label"
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useAuthContext()
   const form = useForm<LoginType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -35,11 +37,18 @@ export default function LoginPage() {
 
   async function onSubmit(values: LoginType) {
     try {
-      const { data } = await api.post<LoginResponseType>("/auth/login", values)
+      const { data } = await api.post<LoginResponseType>(
+        "/auth/login",
+        values,
+        {
+          withCredentials: true,
+        }
+      )
       toast.success("Success", {
         description: data.message,
       })
       form.reset()
+      login(data.response)
       return navigate("/")
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -138,7 +147,7 @@ export default function LoginPage() {
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                     Don't have an account?
                     <Link
-                      to="/register"
+                      to="/auth/register"
                       className="text-gray-500 underline hover:text-gray-900 hover:font-normal"
                     >
                       Register

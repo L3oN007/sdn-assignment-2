@@ -1,5 +1,5 @@
 const { calculateAverageRating } = require('../lib/utils');
-const { Watch } = require('../models/model');
+const { Watch, Comment } = require('../models/model');
 const commentValidator = require('../validators/comment');
 const watchValidator = require('../validators/watch')
 const { validationResult } = require('express-validator');
@@ -8,8 +8,15 @@ const { validationResult } = require('express-validator');
 const watchController = {
     getAllWatches: async (req, res) => {
         try {
-            const watches = await Watch.find()
-            const watchesWithAvgRating = watches.map(watch => ({ watch, avgRating: calculateAverageRating(watch.comments) }))
+            const watches = await Watch.find().populate({
+                path: 'brand',
+                select: 'brandName'
+            })
+            const watchesWithAvgRating = watches.map(watch => {
+                const watchObj = watch.toObject();
+                watchObj.avgRating = calculateAverageRating(watch.comments);
+                return watchObj;
+            });
             return res.status(200).json({
                 message: "Success",
                 response: watchesWithAvgRating
@@ -25,7 +32,21 @@ const watchController = {
     getWatchById: async (req, res) => {
         try {
             const watch = await Watch.findById(req.params.id)
-            const watchWithAvgRating = { watch, avgRating: calculateAverageRating(watch.comments) }
+                .populate({
+                    path: 'brand',
+                    select: 'brandName'
+                })
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'author',
+                        model: 'members',
+                        select: 'memberName'
+                    },
+                    options: { sort: { createdAt: -1 } } // Sort comments by createdAt in descending order
+                });
+            const watchWithAvgRating = watch.toObject();
+            watchWithAvgRating.avgRating = calculateAverageRating(watch.comments);
             return res.status(200).json({
                 message: "Success",
                 response: watchWithAvgRating

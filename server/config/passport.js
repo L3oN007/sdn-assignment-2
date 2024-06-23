@@ -3,8 +3,17 @@ const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 
 const PUB_KEY = "super-secret-key"; // Ideally, use environment variables for sensitive data
 
+const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies['token']; // Assuming the cookie name is 'token'
+    }
+    return token;
+};
+
+
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
     secretOrKey: PUB_KEY,
     algorithms: ['HS256'] // Use HS256 for a symmetric key
 };

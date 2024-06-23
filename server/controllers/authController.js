@@ -38,8 +38,10 @@ const authController = {
                 // If successful, return a success response here
                 const payload = {
                     memberName: existMember.memberName,
+                    name: existMember.name,
                     _id: existMember._id,
-                    isAdmin: existMember.isAdmin
+                    isAdmin: existMember.isAdmin,
+                    YOB: existMember.YOB
                 }
 
                 const token = jwt.sign(payload, "super-secret-key", { expiresIn: '1d' });
@@ -54,7 +56,8 @@ const authController = {
 
                 return res.status(200).json({
                     success: true,
-                    message: "Login successful"
+                    message: "Login successful",
+                    response: payload
                 });
             } catch (error) {
                 return res.status(500).json({
@@ -219,7 +222,35 @@ const authController = {
                 });
             }
         }
-    ]
+    ],
+    getUserById: async (req, res) => {
+        try {
+            const member = await Member.findById(req.user._id);
+            if (!member) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not find the user"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: "Get user successful",
+                response: {
+                    _id: member._id,
+                    memberName: member.memberName,
+                    name: member.name,
+                    YOB: member.YOB,
+                    isAdmin: member.isAdmin
+                }
+            })
+        } catch (error) {
+            console.log("Get user by id error: ", error)
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    }
 }
 
 module.exports = authController
