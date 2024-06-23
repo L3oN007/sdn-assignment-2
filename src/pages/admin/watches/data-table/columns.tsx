@@ -32,7 +32,11 @@ export const columns: ColumnDef<WatchType>[] = [
     accessorKey: "watchDescription",
     header: "Description",
     cell: ({ row }) => {
-      return <p className="max-w-[400px]">{row.original.watchDescription}</p>
+      return (
+        <p className="max-w-[400px] line-clamp-5">
+          {row.original.watchDescription}
+        </p>
+      )
     },
   },
   {

@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 
 import AddWatchPage from "@/pages/admin/add-watch"
+import EditWatchPage from "@/pages/admin/edit-watch"
 import AdminWatchesPage from "@/pages/admin/watches"
 import ErrorPage from "@/pages/error"
 import HomePage from "@/pages/home"
@@ -30,6 +31,7 @@ function App() {
       <Route element={<AdminLayout />}>
         <Route path="/admin/watches" element={<AdminWatchesPage />} />
         <Route path="/admin/watch/add" element={<AddWatchPage />} />
+        <Route path="/admin/watch/:id" element={<EditWatchPage />} />
       </Route>
     </Routes>
   )

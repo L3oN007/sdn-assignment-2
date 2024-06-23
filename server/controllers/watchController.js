@@ -115,12 +115,6 @@ const watchController = {
             const { id } = req.params
             try {
                 const existWatch = await Watch.findOne({ watchName })
-                if (existWatch) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Watch name already exists"
-                    });
-                }
                 await Watch.findByIdAndUpdate(id, { watchName, image, price, watchDescription, automatic, brand }, { new: true })
                 return res.status(200).json({
                     success: true,

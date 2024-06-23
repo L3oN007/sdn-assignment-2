@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 
+import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 import { MemberType, WhoAmIResponseType } from "@/schemas/auth.schema"
@@ -22,6 +23,7 @@ export const AuthContext = React.createContext<AuthContextType | null>(null)
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [member, setMember] = useState<MemberType | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const checkSession = async () => {
@@ -50,6 +52,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       toast.success("Logged out successfully")
       setMember(null)
       setIsAuthenticated(false)
+      navigate("/")
     } catch (error) {
       console.log("Error while logging out", error)
       toast.error("An error occurred while logging out")

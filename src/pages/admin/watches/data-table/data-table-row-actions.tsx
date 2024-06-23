@@ -2,6 +2,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Row } from "@tanstack/react-table"
 import { AxiosError } from "axios"
+import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 import { CommonResponseType } from "@/schemas/common.schema"
@@ -27,6 +28,7 @@ export default function DataTableRowActions({
 }: DataTableRowActionsProps<WatchType>) {
   const watch = row.original
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const { mutateAsync: deleteWatch } = useMutation({
     mutationKey: ["deleteWatch", watch._id],
@@ -61,7 +63,9 @@ export default function DataTableRowActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate(`/admin/watch/${watch._id}`)}>
+          Edit
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-800 hover:!text-red-800 hover:!bg-red-100"
