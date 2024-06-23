@@ -9,7 +9,13 @@ export const CommentSchema = z.object({
     _id: z.string(),
     memberName: z.string(),
   }),
-  rating: z.coerce.number().nonnegative(),
+  rating: z.coerce
+    .number()
+    .nonnegative()
+    .min(1, {
+      message: "Rating must be between 1 and 3",
+    })
+    .max(3, { message: "Rating must be between 1 and 3" }),
 })
 
 export type CommentType = z.infer<typeof CommentSchema>

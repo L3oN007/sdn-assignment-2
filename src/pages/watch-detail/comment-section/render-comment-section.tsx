@@ -1,8 +1,15 @@
+import { useAuthContext } from "@/contexts/auth-provider"
 import { StarFilledIcon } from "@radix-ui/react-icons"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import { format } from "date-fns"
 import { EllipsisVertical } from "lucide-react"
+import { useParams } from "react-router-dom"
+import { toast } from "sonner"
 
-import { CommentType } from "@/schemas/comment.schema"
+import { CommentResponseType, CommentType } from "@/schemas/comment.schema"
+
+import api from "@/lib/api"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -27,6 +34,38 @@ export default function RenderCommentSection({
   rating,
   onEdit,
 }: Props) {
+  const { member } = useAuthContext()
+  const { id } = useParams()
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: deleteComment } = useMutation({
+    mutationKey: ["deleteComment", _id],
+    mutationFn: async () => {
+      const { data } = await api.delete<CommentResponseType>(
+        `/watches/${id}/comments/${_id}`
+      )
+      return data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["watches"],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["watch", id],
+      })
+      toast.success("Success", {
+        description: data.message,
+      })
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          error.response?.data?.message ??
+          "An error occurred while deleting comment."
+        toast.error(errorMessage)
+      }
+    },
+  })
   return (
     <div className="p-6 text-base bg-white rounded-lg dark:bg-gray-900 border-b">
       <div className="flex justify-between items-center mb-2">
@@ -51,22 +90,27 @@ export default function RenderCommentSection({
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {format(new Date(updatedAt), "MMM dd, yyyy")}
           </p>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <EllipsisVertical className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-800 hover:!text-red-800 hover:!bg-red-100">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {member?._id === author._id && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <EllipsisVertical className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-800 hover:!text-red-800 hover:!bg-red-100"
+                  onClick={() => deleteComment()}
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
       <p className="text-gray-500 dark:text-gray-400">{content}</p>

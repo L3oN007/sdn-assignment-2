@@ -1,6 +1,4 @@
-import React from "react"
-
-import { Star } from "lucide-react"
+import { Star, Watch } from "lucide-react"
 import { Link } from "react-router-dom"
 
 type Props = {
@@ -68,23 +66,7 @@ export default function WatchCard({
               </div>
             </div>
             <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-watch"
-              >
-                <circle cx="12" cy="12" r="6" />
-                <polyline points="12 10 12 12 13 13" />
-                <path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05" />
-                <path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05" />
-              </svg>
+              <Watch className="size-5" />
 
               <div className="mt-1.5 sm:mt-0">
                 <p className="text-gray-500">Automatic</p>
@@ -96,9 +78,9 @@ export default function WatchCard({
               <Star className="size-4 " />
 
               <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-500">Avg Star</p>
+                <p className="text-gray-500">Avg Rating</p>
 
-                <p className="font-medium">{avgRating} / 3</p>
+                <p className="font-medium">{avgRating.toFixed(1)} / 3</p>
               </div>
             </div>
           </div>

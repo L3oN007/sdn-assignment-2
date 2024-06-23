@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { StarFilledIcon } from "@radix-ui/react-icons"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
@@ -12,6 +13,7 @@ import {
 } from "@/schemas/comment.schema"
 
 import api from "@/lib/api"
+import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,19 +33,16 @@ export default function PostCommentSection() {
     resolver: zodResolver(CreateCommentSchema),
     defaultValues: {
       content: "",
-      rating: 1,
+      rating: 0,
     },
   })
 
   const { mutateAsync: createComment } = useMutation({
-    mutationKey: ["createComment"],
+    mutationKey: ["createComment", id],
     mutationFn: async (values: CreateCommentType) => {
       const { data } = await api.post<CommentResponseType>(
         `/watches/${id}/comments`,
-        {
-          content: values.content,
-          rating: 2,
-        }
+        values
       )
       return data
     },
@@ -72,6 +71,11 @@ export default function PostCommentSection() {
   async function onSubmit(values: CreateCommentType) {
     await createComment(values)
   }
+
+  const handleRatingChange = (rating: number) => {
+    form.setValue("rating", rating)
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit, (err) => console.error(err))}>
@@ -90,6 +94,35 @@ export default function PostCommentSection() {
                     rows={4}
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="rating"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="rating" className="block mb-2 text-lg">
+                  Rating
+                </Label>
+                <FormControl>
+                  <div className="flex items-center">
+                    {[1, 2, 3].map((value) => (
+                      <StarFilledIcon
+                        key={value}
+                        className={cn(
+                          "cursor-pointer size-6",
+                          value <= field.value
+                            ? "text-yellow-400"
+                            : "text-gray-300"
+                        )}
+                        onClick={() => handleRatingChange(value)}
+                      />
+                    ))}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

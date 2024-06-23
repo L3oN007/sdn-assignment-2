@@ -155,6 +155,20 @@ const watchController = {
         const { watchId, commentId } = req.params
         try {
             const watch = await Watch.findById(watchId)
+                .populate({
+                    path: 'brand',
+                    select: 'brandName'
+                })
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'author',
+                        model: 'members',
+                        select: 'memberName'
+                    },
+                    options: { sort: { createdAt: -1 } } // Sort comments by createdAt in descending order
+                });
+
             if (!watch) {
                 return res.status(400).json({
                     success: false,
@@ -162,24 +176,20 @@ const watchController = {
                 });
             }
 
-            // Find the comment to be deleted
-            const comment = watch.comments.id(commentId);
-            if (!comment) {
+            // Find the index of the comment to be deleted
+            const commentIndex = watch.comments.findIndex(comment => comment._id.toString() === commentId);
+
+            if (commentIndex === -1) {
                 return res.status(404).json({
                     success: false,
                     message: "Comment not found"
                 });
             }
 
-            if (comment.author.toString() !== req.user._id.toString()) {
-                return res.status(403).json({
-                    success: false,
-                    message: "You are not authorized to delete this comment"
-                });
-            }
+            // Remove the comment from the comments array
+            watch.comments.splice(commentIndex, 1);
 
-            // Delete the comment
-            comment.remove();
+
             await watch.save();
             return res.status(200).json({
                 success: true,

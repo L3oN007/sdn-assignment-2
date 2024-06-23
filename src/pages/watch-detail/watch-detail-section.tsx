@@ -90,7 +90,7 @@ export default function WatchDetailSection({
               <div className="mt-1.5 sm:mt-0">
                 <p className="text-gray-500">Avg Rating</p>
 
-                <p className="font-medium">{avgRating} / 3</p>
+                <p className="font-medium">{avgRating.toFixed(1)} / 3</p>
               </div>
             </div>
           </div>
