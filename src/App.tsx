@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 
+import AdminAccountPage from "@/pages/admin/accounts"
 import AddWatchPage from "@/pages/admin/add-watch"
 import EditWatchPage from "@/pages/admin/edit-watch"
 import AdminWatchesPage from "@/pages/admin/watches"
@@ -32,6 +33,7 @@ function App() {
         <Route path="/admin/watches" element={<AdminWatchesPage />} />
         <Route path="/admin/watch/add" element={<AddWatchPage />} />
         <Route path="/admin/watch/:id" element={<EditWatchPage />} />
+        <Route path="/admin/accounts" element={<AdminAccountPage />} />
       </Route>
     </Routes>
   )

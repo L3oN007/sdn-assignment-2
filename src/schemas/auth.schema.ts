@@ -1,5 +1,7 @@
 import * as z from "zod"
 
+import { CommonSchema } from "@/schemas/common.schema"
+
 export const LoginSchema = z.object({
   memberName: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
@@ -37,6 +39,12 @@ export const MemberSchema = z.object({
 })
 
 export type MemberType = z.infer<typeof MemberSchema>
+
+export const MemberResponseSchema = CommonSchema.extend({
+  response: z.array(MemberSchema),
+})
+
+export type MemberResponseType = z.infer<typeof MemberResponseSchema>
 
 export type LoginResponseType = {
   success: boolean
