@@ -4,6 +4,7 @@ import AdminAccountPage from "@/pages/admin/accounts"
 import AddBrandPage from "@/pages/admin/add-brand"
 import AddWatchPage from "@/pages/admin/add-watch"
 import AdminBrandsPage from "@/pages/admin/brands"
+import EditBrandPage from "@/pages/admin/edit-brand"
 import EditWatchPage from "@/pages/admin/edit-watch"
 import AdminWatchesPage from "@/pages/admin/watches"
 import ErrorPage from "@/pages/error"
@@ -43,6 +44,7 @@ function App() {
         {/* ! BRAND ROUTE */}
         <Route path="/admin/brands" element={<AdminBrandsPage />} />
         <Route path="/admin/brand/add" element={<AddBrandPage />} />
+        <Route path="/admin/brand/:id" element={<EditBrandPage />} />
       </Route>
     </Routes>
   )
