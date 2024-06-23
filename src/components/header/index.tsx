@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button"
 export default function Header() {
   const { isAuthenticated, member, logout } = useAuthContext()
 
-  console.log("isAuthenticated in Header:", isAuthenticated) // Use this for debugging
-
   return (
     <header className="border-b bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -27,25 +25,28 @@ export default function Header() {
             >
               Settings
             </Link>
-
-            <Link
-              to="/admin/watches"
-              className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
-            >
-              Manage Watches
-            </Link>
-            <Link
-              to="/admin/brands"
-              className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
-            >
-              Manage Brands
-            </Link>
-            <Link
-              to="/admin/accounts"
-              className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
-            >
-              Manage Accounts
-            </Link>
+            {member?.isAdmin && (
+              <>
+                <Link
+                  to="/admin/watches"
+                  className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
+                >
+                  Manage Watches
+                </Link>
+                <Link
+                  to="/admin/brands"
+                  className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
+                >
+                  Manage Brands
+                </Link>
+                <Link
+                  to="/admin/accounts"
+                  className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
+                >
+                  Manage Accounts
+                </Link>
+              </>
+            )}
           </nav>
         </div>
         <div className="space-x-2">

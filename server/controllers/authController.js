@@ -165,9 +165,7 @@ const authController = {
     ],
     logout: async (req, res, next) => {
         try {
-            req.logout(function (err) {
-                if (err) { return next(err); }
-            })
+
             res.cookie('token', '', {
                 httpOnly: true, // Helps prevent XSS attacks
                 secure: process.env.NODE_ENV === 'production', // Ensures the cookie is sent over HTTPS in production
