@@ -105,25 +105,27 @@ export default function PostCommentSection() {
             name="rating"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="rating" className="block mb-2 text-lg">
-                  Rating
-                </Label>
-                <FormControl>
-                  <div className="flex items-center">
-                    {[1, 2, 3].map((value) => (
-                      <StarFilledIcon
-                        key={value}
-                        className={cn(
-                          "cursor-pointer size-6",
-                          value <= field.value
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        )}
-                        onClick={() => handleRatingChange(value)}
-                      />
-                    ))}
-                  </div>
-                </FormControl>
+                <div className="flex items-center space-x-2">
+                  <Label htmlFor="rating" className=" text-lg">
+                    Rating
+                  </Label>
+                  <FormControl>
+                    <div className="flex items-center">
+                      {[1, 2, 3].map((value) => (
+                        <StarFilledIcon
+                          key={value}
+                          className={cn(
+                            "cursor-pointer size-6",
+                            value <= field.value
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          )}
+                          onClick={() => handleRatingChange(value)}
+                        />
+                      ))}
+                    </div>
+                  </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

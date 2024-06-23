@@ -31,7 +31,14 @@ export default function CommentSection({ comments }: Props) {
           {comments.map((comment) => (
             <div className="" key={comment._id}>
               {editCommentId === comment._id ? (
-                <EditCommentSection />
+                <EditCommentSection
+                  _id={comment._id}
+                  updatedAt={comment.updatedAt}
+                  content={comment.content}
+                  rating={comment.rating}
+                  author={comment.author}
+                  cancelEdit={() => setEditCommentId(null)}
+                />
               ) : (
                 <RenderCommentSection
                   key={comment._id}

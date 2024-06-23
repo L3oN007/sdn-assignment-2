@@ -88,7 +88,7 @@ export default function RenderCommentSection({
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            {format(new Date(updatedAt), "MMM dd, yyyy")}
+            {format(new Date(updatedAt), "MMM dd, yyyy hh:mm aa")}
           </p>
           {member?._id === author._id && (
             <DropdownMenu>
