@@ -11,6 +11,12 @@ const BrandResponseSchema = CommonSchema.extend({
   response: z.array(BrandSchema),
 })
 
+export const CreateBrandSchema = BrandSchema.omit({
+  _id: true,
+})
+
+export type CreateBrandType = z.infer<typeof CreateBrandSchema>
+
 export type BrandResponseType = z.infer<typeof BrandResponseSchema>
 
 export type BrandType = z.infer<typeof BrandSchema>

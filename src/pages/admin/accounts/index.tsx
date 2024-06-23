@@ -32,7 +32,7 @@ export default function AdminAccountPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Watches List</h1>
+      <h1 className="text-3xl font-bold mb-8">Accounts List</h1>
       <Loader loading={isFetching}>
         <DataTable columns={columns} data={watches} />
       </Loader>
