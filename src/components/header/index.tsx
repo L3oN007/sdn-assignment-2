@@ -1,10 +1,12 @@
-import { useAuthContext } from "@/contexts/auth-provider"
 import { Link } from "react-router-dom"
 
+import { useAuthContext } from "@/contexts/auth-provider"
+
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Header() {
-  const { isAuthenticated, member, logout } = useAuthContext()
+  const { isAuthenticated, member, logout, loading } = useAuthContext()
 
   return (
     <header className="border-b bg-white">
@@ -49,45 +51,49 @@ export default function Header() {
             )}
           </nav>
         </div>
-        <div className="space-x-2">
-          {isAuthenticated ? (
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src="/ava.png"
-                  alt="ava"
-                />
-                <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
+        {loading ? (
+          <Skeleton className="w-32 h-10" />
+        ) : (
+          <div className="space-x-2">
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src="/ava.png"
+                    alt="ava"
+                  />
+                  <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-base font-medium text-black first-letter:uppercase">
+                    {member?.memberName}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => logout()}
+                    className="text-sm font-medium text-neutral-500 transition-colors hover:text-black hover:underline"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <p className="text-base font-medium text-black first-letter:uppercase">
-                  {member?.memberName}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => logout()}
-                  className="text-sm font-medium text-neutral-500 transition-colors hover:text-black hover:underline"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <Link to="/auth/login">
-                <Button size="sm" type="button" variant={"ghost"}>
-                  Login
-                </Button>
-              </Link>
-              <Link to="/auth/register">
-                <Button size="sm" type="button">
-                  Become a member
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
+            ) : (
+              <>
+                <Link to="/auth/login">
+                  <Button size="sm" type="button" variant={"ghost"}>
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/auth/register">
+                  <Button size="sm" type="button">
+                    Become a member
+                  </Button>
+                </Link>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </header>
   )

@@ -1,4 +1,3 @@
-import { useAuthContext } from "@/contexts/auth-provider"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
@@ -12,6 +11,8 @@ import {
 } from "@/schemas/auth.schema"
 
 import api from "@/lib/api"
+
+import { useAuthContext } from "@/contexts/auth-provider"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -37,13 +38,7 @@ export default function LoginPage() {
 
   async function onSubmit(values: LoginType) {
     try {
-      const { data } = await api.post<LoginResponseType>(
-        "/auth/login",
-        values,
-        {
-          withCredentials: true,
-        }
-      )
+      const { data } = await api.post<LoginResponseType>("/auth/login", values)
       toast.success("Success", {
         description: data.message,
       })

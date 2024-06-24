@@ -13,6 +13,7 @@ type AuthProviderProps = {
 
 type AuthContextType = {
   isAuthenticated: boolean
+  loading: boolean
   member: MemberType | null
   setMember: (member: MemberType | null) => void
   login: (memberData: MemberType) => void
@@ -23,12 +24,14 @@ export const AuthContext = React.createContext<AuthContextType | null>(null)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [member, setMember] = useState<MemberType | null>(null)
+  const [loading, setLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     const checkSession = async () => {
       try {
+        setLoading(true)
         const { data } = await api.get<WhoAmIResponseType>("/auth/who-am-i")
         if (data.response) {
           setMember(data.response)
@@ -36,6 +39,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       } catch (error) {
         console.log("Error while checking session", error)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -62,7 +67,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, member, setMember, login, logout }}
+      value={{ isAuthenticated, member, setMember, loading, login, logout }}
     >
       {children}
     </AuthContext.Provider>
