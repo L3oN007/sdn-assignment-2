@@ -14,6 +14,7 @@ type AuthProviderProps = {
 type AuthContextType = {
   isAuthenticated: boolean
   member: MemberType | null
+  setMember: (member: MemberType | null) => void
   login: (memberData: MemberType) => void
   logout: () => void
 }
@@ -60,7 +61,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, member, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, member, setMember, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   )

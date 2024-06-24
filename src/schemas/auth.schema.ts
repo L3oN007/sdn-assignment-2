@@ -40,6 +40,36 @@ export const MemberSchema = z.object({
 
 export type MemberType = z.infer<typeof MemberSchema>
 
+export const ProfileSchema = MemberSchema.omit({
+  _id: true,
+  isAdmin: true,
+})
+
+export type ProfileType = z.infer<typeof ProfileSchema>
+
+export const PasswordSettingSchema = z
+  .object({
+    password: z.string().min(1, "Password is required"),
+    newPassword: z.string().min(1, "Password is required"),
+    confirmedPassword: z.string(),
+  })
+  .refine((schema) => schema.newPassword === schema.confirmedPassword, {
+    message: "Passwords do not match",
+    path: ["confirmedPassword"],
+  })
+  .refine((schema) => schema.password !== schema.newPassword, {
+    message: "New password must be different from the current password",
+    path: ["newPassword"],
+  })
+
+export type PasswordSettingType = z.infer<typeof PasswordSettingSchema>
+
+export type ProfileSettingResponseType = {
+  success: boolean
+  message: string
+  response: MemberType
+}
+
 export const MemberResponseSchema = CommonSchema.extend({
   response: z.array(MemberSchema),
 })

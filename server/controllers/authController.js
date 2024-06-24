@@ -133,7 +133,7 @@ const authController = {
                 if (!isValid) {
                     return res.status(400).json({
                         success: false,
-                        message: "Invalid credentials"
+                        message: "Current password is incorrect"
                     });
                 }
 
@@ -197,20 +197,22 @@ const authController = {
             }
             const { memberName, name, YOB } = req.body;
             try {
-                const existMember = await Member.findOne({ memberName });
-                if (existMember) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Username already exists"
-                    });
-                }
+                const existMember = await Member.findById(req.user._id);
+
                 existMember.memberName = memberName;
                 existMember.name = name;
                 existMember.YOB = YOB;
                 await existMember.save();
                 return res.status(200).json({
                     success: true,
-                    message: "Profile updated successfully"
+                    message: "Profile updated successfully",
+                    response: {
+                        _id: existMember._id,
+                        memberName: existMember.memberName,
+                        name: existMember.name,
+                        YOB: existMember.YOB,
+                        isAdmin: existMember.isAdmin
+                    }
                 })
             } catch (error) {
                 console.log("Update profile error: ", error)

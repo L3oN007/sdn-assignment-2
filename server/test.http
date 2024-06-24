@@ -1,4 +1,4 @@
-GET  http://localhost:5000/watches/667047a04aa64f22523d91bd
+GET  http://localhost:5000/watches/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJOYW1lIjoiYWRtaW4iLCJfaWQiOiI2Njc2NWU2NmMxYTM0MjQ0OTQ1YjcwM2QiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MTkwMzQ0NDEsImV4cCI6MTcxOTEyMDg0MX0.DN8L31GRhxRJDkSjBeHdTEaUIvd6QeoxA37lxhSN-ws
 Content-Type: application/json
 

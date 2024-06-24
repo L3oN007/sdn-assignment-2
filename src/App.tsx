@@ -11,6 +11,7 @@ import ErrorPage from "@/pages/error"
 import HomePage from "@/pages/home"
 import LoginPage from "@/pages/login"
 import RegisterPage from "@/pages/register"
+import SettingsPage from "@/pages/settings"
 import UnauthorizedPage from "@/pages/unauthorized"
 import WatchDetailPage from "@/pages/watch-detail"
 
@@ -45,6 +46,9 @@ function App() {
         <Route path="/admin/brands" element={<AdminBrandsPage />} />
         <Route path="/admin/brand/add" element={<AddBrandPage />} />
         <Route path="/admin/brand/:id" element={<EditBrandPage />} />
+
+        {/* ! SETTINGS ROUTE */}
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
   )
