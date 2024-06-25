@@ -102,7 +102,7 @@ const watchController = {
         }
     ],
     updateWatchById: [
-        watchValidator(),
+        watchValidator(), // Assuming this middleware validates the request body
         async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -111,21 +111,45 @@ const watchController = {
                     message: errors.array().map(err => err.msg).join(', ')
                 });
             }
-            const { watchName, image, price, watchDescription, automatic, brand } = req.body
-            const { id } = req.params
+
+            const { watchName, image, price, watchDescription, automatic, brand } = req.body;
+            const { id } = req.params;
+
             try {
-                const existWatch = await Watch.findOne({ watchName })
-                await Watch.findByIdAndUpdate(id, { watchName, image, price, watchDescription, automatic, brand }, { new: true })
+                // Check if the watchName already exists for another watch
+                const existingWatch = await Watch.findOne({ watchName: watchName, _id: { $ne: id } });
+                if (existingWatch) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Watch name already exists."
+                    });
+                }
+
+                // Update the watch
+                const updatedWatch = await Watch.findByIdAndUpdate(
+                    id,
+                    { watchName, image, price, watchDescription, automatic, brand },
+                    { new: true } // Return the updated document
+                );
+
+                if (!updatedWatch) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "Watch not found."
+                    });
+                }
+
                 return res.status(200).json({
                     success: true,
                     message: "Watch updated successfully",
-                })
+                    data: updatedWatch // Optionally send the updated document back
+                });
             } catch (error) {
-                console.log("Update watch error: ", error)
+                console.error("Update watch error: ", error);
                 return res.status(500).json({
                     success: false,
                     message: "Internal server error"
-                })
+                });
             }
         }
     ],
