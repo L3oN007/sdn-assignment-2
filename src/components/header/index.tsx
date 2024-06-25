@@ -22,11 +22,19 @@ export default function Header() {
             </Link>
 
             <Link
+              to="/search"
+              className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
+            >
+              Search
+            </Link>
+
+            <Link
               to="/settings"
               className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
             >
               Settings
             </Link>
+
             {member?.isAdmin && (
               <>
                 <Link

@@ -1,5 +1,5 @@
 const { calculateAverageRating } = require('../lib/utils');
-const { Watch, Comment } = require('../models/model');
+const { Watch, Comment, Brand } = require('../models/model');
 const commentValidator = require('../validators/comment');
 const watchValidator = require('../validators/watch')
 const { validationResult } = require('express-validator');
@@ -349,11 +349,10 @@ const watchController = {
 
 
             res.status(200).json({
-                success: true,
+
                 message: "Success",
-                response: {
-                    watchesWithAvgRating
-                }
+                response: watchesWithAvgRating
+
             })
         } catch (error) {
             console.log("Search watch error: ", error);

@@ -11,6 +11,7 @@ import ErrorPage from "@/pages/error"
 import HomePage from "@/pages/home"
 import LoginPage from "@/pages/login"
 import RegisterPage from "@/pages/register"
+import SearchPage from "@/pages/search"
 import SettingsPage from "@/pages/settings"
 import UnauthorizedPage from "@/pages/unauthorized"
 import WatchDetailPage from "@/pages/watch-detail"
@@ -28,6 +29,7 @@ function App() {
 
         {/* !WATCH ROUTE */}
         <Route path="/watch/:id" element={<WatchDetailPage />} />
+        <Route path="/search" element={<SearchPage />} />
 
         <Route path="/401" element={<UnauthorizedPage />} />
         <Route path="*" element={<ErrorPage />} />
