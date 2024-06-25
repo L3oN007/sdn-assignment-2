@@ -5,6 +5,7 @@ const router = require('express').Router()
 
 // ! GET
 router.get('/', watchController.getAllWatches)
+router.get('/search', watchController.searchWatch)
 router.get('/:id', watchController.getWatchById)
 router.get('/:watchId/comments', watchController.getAllCommentsByWatchId)
 

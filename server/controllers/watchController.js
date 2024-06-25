@@ -319,7 +319,51 @@ const watchController = {
                 });
             }
         }
-    ]
+    ],
+    searchWatch: async (req, res) => {
+        try {
+            const { watchName, brandName } = req.query;
+            const filter = {};
+
+            if (watchName) {
+                filter.watchName = { $regex: watchName, $options: 'i' };
+            }
+
+            if (brandName) {
+                const brand = await Brand.findOne({ brandName });
+                if (brand) {
+                    filter.brand = brand._id;
+                }
+            }
+
+            const watches = await Watch.find(filter).populate({
+                path: 'brand',
+                select: 'brandName'
+            });
+
+            const watchesWithAvgRating = watches.map(watch => {
+                const watchObj = watch.toObject();
+                watchObj.avgRating = calculateAverageRating(watch.comments);
+                return watchObj;
+            });
+
+
+            res.status(200).json({
+                success: true,
+                message: "Success",
+                response: {
+                    watchesWithAvgRating
+                }
+            })
+        } catch (error) {
+            console.log("Search watch error: ", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+
+        }
+    },
 }
 
 module.exports = watchController
