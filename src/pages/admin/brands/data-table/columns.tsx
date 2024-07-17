@@ -9,7 +9,7 @@ import DataTableRowActions from "@/pages/admin/brands/data-table/data-table-row-
 export const columns: ColumnDef<BrandType>[] = [
   {
     accessorKey: "brandName",
-    header: "Username",
+    header: "Brand Name",
   },
   {
     accessorKey: "actions",

@@ -3,7 +3,7 @@ const { Member } = require('../models/model');
 const memberController = {
     getAllMembers: async (req, res) => {
         try {
-            const members = await Member.find();
+            const members = await Member.find({ isAdmin: false });
             return res.status(200).json({
                 message: "Success",
                 response: members

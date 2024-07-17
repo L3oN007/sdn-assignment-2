@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-import { useAuthContext } from "@/contexts/auth-provider"
-
 import { CommentType } from "@/schemas/comment.schema"
+
+import { useAuthContext } from "@/contexts/auth-provider"
 
 import EditCommentSection from "@/pages/watch-detail/comment-section/edit-comment-section"
 import PostCommentSection from "@/pages/watch-detail/comment-section/post-comment-section"
@@ -14,7 +14,7 @@ type Props = {
 
 export default function CommentSection({ comments }: Props) {
   const [editCommentId, setEditCommentId] = useState<string | null>(null)
-  const { isAuthenticated } = useAuthContext()
+  const { isAuthenticated, member } = useAuthContext()
 
   const handleEditComment = (commentId: string) => {
     setEditCommentId(commentId)
@@ -28,9 +28,10 @@ export default function CommentSection({ comments }: Props) {
           </h2>
         </div>
         <div className="mb-6">
-          {isAuthenticated ? (
+          {isAuthenticated && member?.isAdmin === false && (
             <PostCommentSection />
-          ) : (
+          )}
+          {isAuthenticated !== true && (
             <p>You must be logged in to post a comment</p>
           )}
         </div>

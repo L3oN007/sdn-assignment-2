@@ -33,6 +33,8 @@ function App() {
 
         <Route path="/401" element={<UnauthorizedPage />} />
         <Route path="*" element={<ErrorPage />} />
+        {/* ! SETTINGS ROUTE */}
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
 
       <Route element={<AdminLayout />}>
@@ -48,9 +50,6 @@ function App() {
         <Route path="/admin/brands" element={<AdminBrandsPage />} />
         <Route path="/admin/brand/add" element={<AddBrandPage />} />
         <Route path="/admin/brand/:id" element={<EditBrandPage />} />
-
-        {/* ! SETTINGS ROUTE */}
-        <Route path="/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
   )

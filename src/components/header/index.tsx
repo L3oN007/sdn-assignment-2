@@ -27,13 +27,14 @@ export default function Header() {
             >
               Search
             </Link>
-
-            <Link
-              to="/settings"
-              className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
-            >
-              Settings
-            </Link>
+            {isAuthenticated && (
+              <Link
+                to="/settings"
+                className="text-sm font-medium text-neutral-500 transition-colors hover:text-black"
+              >
+                Settings
+              </Link>
+            )}
 
             {member?.isAdmin && (
               <>
